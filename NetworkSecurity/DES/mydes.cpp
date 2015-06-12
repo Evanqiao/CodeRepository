@@ -139,7 +139,7 @@ bitset<32> f_function(const bitset<32> &R, const bitset<48> K) {
 	bitset<48> expandedR;
 	// 1.扩展置换
 	for(int i = 0; i < 48; i++) {
-		expandedR[47 - i] = R[32 - E[i]];
+                expandedR[i] = R[E[i] - 1];
 	}
 	// 2.expandedR 与 K 执行XOR运算
 	expandedR = expandedR ^ K;
