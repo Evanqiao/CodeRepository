@@ -139,32 +139,37 @@ bitset<32> f_function(const bitset<32> &R, const bitset<48> K) {
 	bitset<48> expandedR;
 	// 1.扩展置换
 	for(int i = 0; i < 48; i++) {
-                expandedR[i] = R[E[i] - 1];
+        expandedR[47 - i] = R[32 - E[i]];
 	}
 	// 2.expandedR 与 K 执行XOR运算
 	expandedR = expandedR ^ K;
 	// 3. S盒置换
 	bitset<32> output;
 	for(int i = 0, j = 0; i < 48; i += 6, j += 4) {
-		int row = expandedR[i] * 2 + expandedR[i + 5];
-		int column = expandedR[i + 1] * 8 + expandedR[i + 2] * 4 + expandedR[i + 3] * 2 + expandedR[i + 4];
+		int row = expandedR[47 - i] * 2 + expandedR[47 - i - 5];
+		int column = expandedR[47 - i - 1] * 8 + expandedR[47 - i - 2] * 4 + expandedR[47 - i - 3] * 2 + expandedR[47 - i - 4];
 
-		bitset<4> bitTemp(S_BOX[i / 6][row - 1][column - 1]);
-		output[j] = bitTemp[0];
-		output[j + 1] = bitTemp[1];
-		output[j + 2] = bitTemp[2];
-		output[j + 3] = bitTemp[3];
+		bitset<4> bitTemp(S_BOX[i / 6][row][column]);
+		output[31 - j] = bitTemp[3];
+		output[31 - j - 1] = bitTemp[2];
+		output[31 - j - 2] = bitTemp[1];
+		output[31 - j - 3] = bitTemp[0];
 	}
 	// 4. P置换
 	bitset<32> tmp = output;
 	for(int i = 0; i < 32; i++) {
-		output[i] = tmp[P[i] - 1];
+		output[31 - i] = tmp[32 - P[i]];
 	}
 	return output;
 }
-// 用内联函数实现循环左移
-void inline leftShift(bitset<28> &bits, int count) {
-	bits = (bits << count) | (bits >> (28 - count));
+// 用函数实现循环左移
+void leftShift(bitset<28> &bits, int count) {
+    bitset<28> bittemp;
+    for(int i = 0; i < 28; i++)
+        bittemp[i] = bits[27 - i];
+	bittemp = (bittemp >> count) | (bittemp << (28 - count));
+    for(int i = 0; i < 28; i++)
+        bits[27 - i] = bittemp[i];
 }
 // 生成子密钥
 bitset<48> getSubKey(bitset<28> &C, bitset<28> &D, int shiftCounts) {
@@ -173,13 +178,13 @@ bitset<48> getSubKey(bitset<28> &C, bitset<28> &D, int shiftCounts) {
 	bitset<56> con;
 	for(int i = 0; i < 56; i++) {
 		if(i < 27)
-			con[i] = C[i];
+			con[55 - i] = C[27 - i];
 		else
-			con[i] = D[i - 28];
+			con[55 - i] = D[55 - i];
 	}
 	bitset<48> res;
 	for(int i = 0; i < 48; i++) {
-		res[i] = con[PC_2[i] - 1];
+		res[47 - i] = con[56 - PC_2[i]];
 	}
 	return res;
 }
@@ -189,7 +194,7 @@ bitset<64> encrypt(const bitset<64> &text, const bitset<64> key, EDFlag edFlag) 
 	// 1. 初始置换IP
 	bitset<64> initReplace;
 	for(int i = 0; i < 64; i++) {
-		initReplace[i] = text[IP[i] - 1];
+		initReplace[63 - i] = text[64 - IP[i]];
 	}
 	// 2. 16轮
 	bitset<32> currentL;
@@ -200,45 +205,60 @@ bitset<64> encrypt(const bitset<64> &text, const bitset<64> key, EDFlag edFlag) 
 	// 2.1 获得L和R
 	for(int i = 0; i < 64; i++) {
 		if(i < 32)
-			currentL[i] = initReplace[i];
+			currentL[31 - i] = initReplace[63 - i];
 		else
-			currentR[i - 32] = initReplace[i];
+			currentR[63 - i] = initReplace[63 - i];
 	}
+#if 0
+cout << "in:" << initReplace << endl;
+cout << "L:" << currentL << endl;
+cout << "R:" << currentR << endl;
+#endif
 	// 2.2 获得C和D
 	bitset<56> initKeyReplace;
 	for(int i = 0; i < 56; i++) {
-		initKeyReplace[i] = key[PC_1[i] - 1];
-		if(i < 32)
-			currentC[i] = initKeyReplace[i];
-		else
-			currentD[i - 32] = initKeyReplace[i];
+		initKeyReplace[55 - i] = key[64 - PC_1[i]];
 	}
+    for(int i = 0; i < 56; i++) {
+		if(i < 28)
+			currentC[27 - i] = initKeyReplace[55 - i];
+		else
+			currentD[55 - i] = initKeyReplace[55 - i];
+    }
 	// 2.3 16 round
 	for(int round = 0; round < 16; round++) {
 		nextL = currentR;
-                int key_round = (edFlag == Encryption) ? round : (15 - round);
-                currentR = f_function(currentR, getSubKey(currentC, currentD, shiftBitCounts[key_round]));
+        int key_round = (edFlag == Encryption) ? round : (15 - round);
+        currentR = f_function(currentR, getSubKey(currentC, currentD, shiftBitCounts[key_round]));
 
 		currentR = currentR ^ currentL;
 		currentL = nextL;
+#if 1
+    cout << "currentR" << key_round << ":" << currentR << endl;
+#endif
 	}
+#if 0
+cout << "currentR:" << currentR << endl;
+cout << "nextL:" << nextL << endl;
+#endif
 	// 3. 32位互换
 	bitset<64> exchange;
 	for(int i = 0; i < 64; i++) {
 		if(i < 32)
-			exchange[i] = currentR[i];
+			exchange[63 - i] = currentR[31 - i];
 		else
-			exchange[i] = currentL[i - 32];
+			exchange[63 - i] = currentL[63 - i];
 	}
 	// 4. 结尾IP_1置换
 	bitset<64> result;
 	for(int i = 0; i < 64; i++) {
-		result[i] = exchange[IP_1[i] - 1];
+		result[63 - i] = exchange[64 - IP_1[i]];
 	}
 	return result;
 }
 // 64位的字符串转换成bitset
-bitset<64> charToBitset(const char *s) {
+bitset<64> charToBitset(const char *s) 
+{
 	bitset<64> res;
 	for(int i = 0; i < 8; i++)
 		for(int j = 0; j < 8; j++)
@@ -246,39 +266,38 @@ bitset<64> charToBitset(const char *s) {
 	return res;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
 	string s_text = "romantic";
 	string s_key = "12345678";
 	bitset<64> text = charToBitset(s_text.c_str());
 	bitset<64> key = charToBitset(s_key.c_str());
 
-        bitset<64> ciphertext = encrypt(text, key, Encryption);
+    bitset<64> ciphertext = encrypt(text, key, Encryption);
 
+#if 1
+//cout << "text:" << text << endl;
+cout << "ciphertext:" << ciphertext << endl;
+//cout << "key: " << key << endl;
+#endif
 	fstream file1;
-	file1.open("D://ciphertext.txt", ios::binary | ios::out);
+	file1.open("ciphertext.txt", ios::binary | ios::out);
 	file1.write((char*)&ciphertext, sizeof(ciphertext));
 	file1.close();
 
-        /**
-        bitset<64> temp;
-        file1.open("D://ciphertext.txt", ios::binary | ios::out);
-        file1.read((char*)&temp, sizeof(temp));
-        file1.close();
+/*    
+    bitset<64> temp;
+    file1.open("ciphertext.txt", ios::binary | ios::out);
+    file1.read((char*)&temp, sizeof(temp));
+    file1.close();
 
-        bitset<64> plaintext = encrypt(text, key, Decipherment);
-        file1.open("D://plaintext.txt", ios::binary | ios::out);
-        file1.write((char*)&plaintext, sizeof(plaintext));
-        file1.close();
-        **/
-        return 0;
+    bitset<64> plaintext = encrypt(text, key, Decipherment);
+    file1.open("plaintext.txt", ios::binary | ios::out);
+    file1.write((char*)&plaintext, sizeof(plaintext));
+    file1.close();
+*/
+    return 0;
 }
-
-
-
-
-
-
-
 
 
 
