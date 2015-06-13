@@ -150,6 +150,14 @@ bitset<32> f(bitset<32> R, bitset<48> k)
         expandR[47-i] = R[32-E[i]];
     // 第二步：异或
     expandR = expandR ^ k;
+#if 0
+static int jj = -1;
+jj++;
+if(jj == 9) {
+    cout << "K" << jj << ":" << k << endl;
+    //cout << "expandedR" << jj << ":" << expandR << endl;
+}
+#endif
     // 第三步：查找S_BOX置换表
     bitset<32> output;
     int x = 0;
@@ -261,10 +269,17 @@ cout << "R:" << right << endl;
     for(int round=0; round<16; ++round)
     {
         newLeft = right;
+#if 0
+    cout << "f" << round << ":" << f(right,subKey[round]) << endl;
+#endif
         right = left ^ f(right,subKey[round]);
         left = newLeft;
-#if 1
+#if 0
+    if(round == 9 || round == 8) {
     cout << "currentR" << round << ":" << right << endl;
+    cout << "currentL" << round << ":" << left << endl;
+    }
+cout << "subKey" << round << ":" << subKey[round] << endl;
 #endif
     }
 #if 0
@@ -350,13 +365,13 @@ int main() {
 
     // 读文件 a.txt
     bitset<64> temp;
-    file1.open("a.txt", ios::binary | ios::in);
+    file1.open("ciphertext.txt", ios::binary | ios::in);
     file1.read((char*)&temp, sizeof(temp));
     file1.close();
 
     // 解密，并写入文件 b.txt
     bitset<64> temp_plain = decrypt(temp);
-    file1.open("b.txt", ios::binary | ios::out);
+    file1.open("plaintext.txt", ios::binary | ios::out);
     file1.write((char*)&temp_plain,sizeof(temp_plain));
     file1.close();
 

@@ -2,8 +2,10 @@
 #include <fstream>
 #include <bitset>
 #include <string>
+#include <cstdlib>
 using namespace std;
 
+bitset<48> subKey[16];         // 存放16轮子密钥
 
 // 初始置换表
 int IP[] = {58, 50, 42, 34, 26, 18, 10, 2,
@@ -130,12 +132,8 @@ int P[] = {16,  7, 20, 21,
            22, 11,  4, 25
           };
 
-typedef enum {
-    Encryption = 1,
-    Decipherment = 2
-}EDFlag;
 // 实现 F 函数
-bitset<32> f_function(const bitset<32> &R, const bitset<48> K) {
+bitset<32> f_function(const bitset<32> &R, const bitset<48> &K) {
 	bitset<48> expandedR;
 	// 1.扩展置换
 	for(int i = 0; i < 48; i++) {
@@ -163,6 +161,7 @@ bitset<32> f_function(const bitset<32> &R, const bitset<48> K) {
 	return output;
 }
 // 用函数实现循环左移
+/*
 void leftShift(bitset<28> &bits, int count) {
     bitset<28> bittemp;
     for(int i = 0; i < 28; i++)
@@ -171,26 +170,60 @@ void leftShift(bitset<28> &bits, int count) {
     for(int i = 0; i < 28; i++)
         bits[27 - i] = bittemp[i];
 }
+*/
+
+/**
+ *  对56位密钥的前后部分进行左移
+ */
+bitset<28> leftShift(bitset<28> k, int shift)
+{
+    bitset<28> tmp = k;
+    for(int i=27; i>=0; --i)
+    {
+        if(i-shift<0)
+            k[i] = tmp[i-shift+28];
+        else
+            k[i] = tmp[i-shift];
+    }
+    return k;
+}
 // 生成子密钥
-bitset<48> getSubKey(bitset<28> &C, bitset<28> &D, int shiftCounts) {
-	leftShift(C, shiftCounts);
-	leftShift(D, shiftCounts);
-	bitset<56> con;
+void getSubKey(const bitset<64> &key) {
+	// 1. 获得C和D
+	bitset<56> initKeyReplace;
 	for(int i = 0; i < 56; i++) {
-		if(i < 27)
-			con[55 - i] = C[27 - i];
+		initKeyReplace[55 - i] = key[64 - PC_1[i]];
+	}
+	bitset<28> C;
+	bitset<28> D;
+    for(int i = 0; i < 56; i++) {
+		if(i < 28)
+			C[27 - i] = initKeyReplace[55 - i];
 		else
-			con[55 - i] = D[55 - i];
-	}
-	bitset<48> res;
-	for(int i = 0; i < 48; i++) {
-		res[47 - i] = con[56 - PC_2[i]];
-	}
-	return res;
+			D[55 - i] = initKeyReplace[55 - i];
+    }
+    // 16 rounds
+    for(int iround = 0; iround < 16; iround++) {
+	    C = leftShift(C, shiftBitCounts[iround]);
+	    D = leftShift(D, shiftBitCounts[iround]);
+        bitset<56> con;
+        for(int i = 0; i < 56; i++) {
+            if(i < 28)
+                con[55 - i] = C[27 - i];
+            else
+                con[55 - i] = D[55 - i];
+        }
+        bitset<48> res;
+        for(int i = 0; i < 48; i++) {
+            res[47 - i] = con[56 - PC_2[i]];
+        }
+        subKey[iround] = res;
+    }
+     
 }
 
-// DES加密或解密
-bitset<64> encrypt(const bitset<64> &text, const bitset<64> key, EDFlag edFlag) {
+// DES加密
+bitset<64> encrypt(const bitset<64> &text) {
 	// 1. 初始置换IP
 	bitset<64> initReplace;
 	for(int i = 0; i < 64; i++) {
@@ -200,8 +233,6 @@ bitset<64> encrypt(const bitset<64> &text, const bitset<64> key, EDFlag edFlag) 
 	bitset<32> currentL;
 	bitset<32> currentR;
 	bitset<32> nextL;
-	bitset<28> currentC;
-	bitset<28> currentD;
 	// 2.1 获得L和R
 	for(int i = 0; i < 64; i++) {
 		if(i < 32)
@@ -209,38 +240,53 @@ bitset<64> encrypt(const bitset<64> &text, const bitset<64> key, EDFlag edFlag) 
 		else
 			currentR[63 - i] = initReplace[63 - i];
 	}
-#if 0
-cout << "in:" << initReplace << endl;
-cout << "L:" << currentL << endl;
-cout << "R:" << currentR << endl;
-#endif
-	// 2.2 获得C和D
-	bitset<56> initKeyReplace;
-	for(int i = 0; i < 56; i++) {
-		initKeyReplace[55 - i] = key[64 - PC_1[i]];
-	}
-    for(int i = 0; i < 56; i++) {
-		if(i < 28)
-			currentC[27 - i] = initKeyReplace[55 - i];
-		else
-			currentD[55 - i] = initKeyReplace[55 - i];
-    }
-	// 2.3 16 round
+	// 2.2 16 round
 	for(int round = 0; round < 16; round++) {
 		nextL = currentR;
-        int key_round = (edFlag == Encryption) ? round : (15 - round);
-        currentR = f_function(currentR, getSubKey(currentC, currentD, shiftBitCounts[key_round]));
+        currentR = f_function(currentR, subKey[round]) ^ currentL;
 
-		currentR = currentR ^ currentL;
 		currentL = nextL;
-#if 1
-    cout << "currentR" << key_round << ":" << currentR << endl;
-#endif
 	}
-#if 0
-cout << "currentR:" << currentR << endl;
-cout << "nextL:" << nextL << endl;
-#endif
+	// 3. 32位互换
+	bitset<64> exchange;
+	for(int i = 0; i < 64; i++) {
+		if(i < 32)
+			exchange[63 - i] = currentR[31 - i];
+		else
+			exchange[63 - i] = currentL[63 - i];
+	}
+	// 4. 结尾IP_1置换
+	bitset<64> result;
+	for(int i = 0; i < 64; i++) {
+		result[63 - i] = exchange[64 - IP_1[i]];
+	}
+	return result;
+}
+// DES decrypt
+bitset<64> decrypt(const bitset<64> &text) {
+	// 1. 初始置换IP
+	bitset<64> initReplace;
+	for(int i = 0; i < 64; i++) {
+		initReplace[63 - i] = text[64 - IP[i]];
+	}
+	// 2. 16轮
+	bitset<32> currentL;
+	bitset<32> currentR;
+	bitset<32> nextL;
+	// 2.1 获得L和R
+	for(int i = 0; i < 64; i++) {
+		if(i < 32)
+			currentL[31 - i] = initReplace[63 - i];
+		else
+			currentR[63 - i] = initReplace[63 - i];
+	}
+	// 2.2 16 round
+	for(int round = 0; round < 16; round++) {
+		nextL = currentR;
+        currentR = f_function(currentR, subKey[15 - round]) ^ currentL;
+
+		currentL = nextL;
+	}
 	// 3. 32位互换
 	bitset<64> exchange;
 	for(int i = 0; i < 64; i++) {
@@ -268,36 +314,57 @@ bitset<64> charToBitset(const char *s)
 
 int main(int argc, char *argv[]) 
 {
-	string s_text = "romantic";
+	string s_text = "nihknihk";
 	string s_key = "12345678";
 	bitset<64> text = charToBitset(s_text.c_str());
 	bitset<64> key = charToBitset(s_key.c_str());
 
-    bitset<64> ciphertext = encrypt(text, key, Encryption);
+    getSubKey(key);
 
-#if 1
-//cout << "text:" << text << endl;
-cout << "ciphertext:" << ciphertext << endl;
-//cout << "key: " << key << endl;
-#endif
+    bitset<64> ciphertext = encrypt(text);
+
+	fstream fileIn, fileOut;
+	fileIn.open(argv[1], ios::binary);
+	system("ECHO > qiaoyihan.txt");
+	fileOut.open("qiaoyihan.txt", ios::binary);
+
+	bitset<64> plain;
+	while(fileIn.read((char *)&plain, sizeof(plain)))
+	{
+		bitset<64> cipher  = encrypt(plain);
+		fileOut.write((char*)&cipher, sizeof(cipher)); 
+		plain.reset();  // 置0
+	}
+	fileIn.close();
+	fileOut.close();
+	
+	// 解密 cipher.txt，并写入图片 flower1.jpg  
+	fileIn.open("qiaoyihan.txt", ios::binary);  
+	fileOut.open(argv[1], ios::binary);  
+	while(fileIn.read((char*)&plain, sizeof(plain)))  
+	{  
+		bitset<64> temp  = decrypt(plain);  
+		fileOut.write((char*)&temp, sizeof(temp));  
+		plain.reset();  // 置0  
+	}  
+	fileIn.close();
+	fileOut.close();
+	/*
 	fstream file1;
 	file1.open("ciphertext.txt", ios::binary | ios::out);
 	file1.write((char*)&ciphertext, sizeof(ciphertext));
 	file1.close();
 
-/*    
     bitset<64> temp;
-    file1.open("ciphertext.txt", ios::binary | ios::out);
+    file1.open("ciphertext.txt", ios::binary | ios::in);
     file1.read((char*)&temp, sizeof(temp));
     file1.close();
 
-    bitset<64> plaintext = encrypt(text, key, Decipherment);
+    bitset<64> plaintext = decrypt(temp);
     file1.open("plaintext.txt", ios::binary | ios::out);
     file1.write((char*)&plaintext, sizeof(plaintext));
     file1.close();
-*/
+	*/
     return 0;
 }
-
-
 
