@@ -315,7 +315,7 @@ bitset<64> charToBitset(const char *s)
 int main(int argc, char *argv[]) 
 {
 	string s_text = "nihknihk";
-	string s_key = "12345678";
+	string s_key = argv[1];
 	bitset<64> text = charToBitset(s_text.c_str());
 	bitset<64> key = charToBitset(s_key.c_str());
 
@@ -324,9 +324,10 @@ int main(int argc, char *argv[])
     bitset<64> ciphertext = encrypt(text);
 
 	fstream fileIn, fileOut;
-	fileIn.open(argv[1], ios::binary);
-	system("ECHO > qiaoyihan.txt");
-	fileOut.open("qiaoyihan.txt", ios::binary);
+	//fileIn.open(argv[1], ios::binary);
+	fileIn.open("backgroundColor.png", ios::binary | ios::in);
+	//system("ECHO > qiaoyihan.txt");
+	fileOut.open("¼ÓÃÜ.png", ios::binary | ios::out);
 
 	bitset<64> plain;
 	while(fileIn.read((char *)&plain, sizeof(plain)))
@@ -339,8 +340,8 @@ int main(int argc, char *argv[])
 	fileOut.close();
 	
 	// è§£å¯† cipher.txtï¼Œå¹¶å†™å…¥å›¾ç‰‡ flower1.jpg  
-	fileIn.open("qiaoyihan.txt", ios::binary);  
-	fileOut.open(argv[1], ios::binary);  
+	fileIn.open("¼ÓÃÜ.png", ios::binary | ios::in) ;  
+	fileOut.open("½âÃÜ.png", ios::binary | ios::out);  
 	while(fileIn.read((char*)&plain, sizeof(plain)))  
 	{  
 		bitset<64> temp  = decrypt(plain);  
