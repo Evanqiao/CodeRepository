@@ -315,7 +315,7 @@ bitset<64> charToBitset(const char *s)
 int main(int argc, char *argv[]) 
 {
 	string s_text = "nihknihk";
-	string s_key = argv[1];
+	string s_key = "qiao1234";
 	bitset<64> text = charToBitset(s_text.c_str());
 	bitset<64> key = charToBitset(s_key.c_str());
 
