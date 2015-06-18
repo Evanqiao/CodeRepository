@@ -5,9 +5,9 @@
 #include <cstdlib>
 using namespace std;
 
-bitset<48> subKey[16];         // å­˜æ”¾16è½®å­å¯†é’¥
+bitset<48> subKey[16];         // ´æ·Å16ÂÖ×ÓÃÜÔ¿
 
-// åˆå§‹ç½®æ¢è¡¨
+// ³õÊ¼ÖÃ»»±í
 int IP[] = {58, 50, 42, 34, 26, 18, 10, 2,
             60, 52, 44, 36, 28, 20, 12, 4,
             62, 54, 46, 38, 30, 22, 14, 6,
@@ -18,7 +18,7 @@ int IP[] = {58, 50, 42, 34, 26, 18, 10, 2,
             63, 55, 47, 39, 31, 23, 15, 7
            };
 
-// ç»“å°¾ç½®æ¢è¡¨
+// ÄæÖÃ»»±í
 int IP_1[] = {40, 8, 48, 16, 56, 24, 64, 32,
               39, 7, 47, 15, 55, 23, 63, 31,
               38, 6, 46, 14, 54, 22, 62, 30,
@@ -29,9 +29,9 @@ int IP_1[] = {40, 8, 48, 16, 56, 24, 64, 32,
               33, 1, 41,  9, 49, 17, 57, 25
              };
 
-/*------------------ä¸‹é¢æ˜¯ç”Ÿæˆå¯†é’¥æ‰€ç”¨è¡¨-----------------*/
+/*------------------ÏÂÃæÊÇÉú³ÉÃÜÔ¿ËùÓÃ±í-----------------*/
 
-// å¯†é’¥ç½®æ¢è¡¨ï¼Œå°†64ä½å¯†é’¥å˜æˆ56ä½
+// ÃÜÔ¿ÖÃ»»±í£¬½«64Î»ÃÜÔ¿±ä³É56Î»
 int PC_1[] = {57, 49, 41, 33, 25, 17, 9,
               1, 58, 50, 42, 34, 26, 18,
               10,  2, 59, 51, 43, 35, 27,
@@ -42,7 +42,7 @@ int PC_1[] = {57, 49, 41, 33, 25, 17, 9,
               21, 13,  5, 28, 20, 12,  4
              };
 
-// å‹ç¼©ç½®æ¢ï¼Œå°†56ä½å¯†é’¥å‹ç¼©æˆ48ä½å­å¯†é’¥
+// Ñ¹ËõÖÃ»»£¬½«56Î»ÃÜÔ¿Ñ¹Ëõ³É48Î»×ÓÃÜÔ¿
 int PC_2[] = {14, 17, 11, 24,  1,  5,
               3, 28, 15,  6, 21, 10,
               23, 19, 12,  4, 26,  8,
@@ -53,12 +53,12 @@ int PC_2[] = {14, 17, 11, 24,  1,  5,
               46, 42, 50, 36, 29, 32
              };
 
-// æ¯è½®å·¦ç§»çš„ä½æ•°
+// Ã¿ÂÖ×óÒÆµÄÎ»Êı
 int shiftBitCounts[] = {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
 
-/*------------------ä¸‹é¢æ˜¯å¯†ç å‡½æ•° f æ‰€ç”¨è¡¨-----------------*/
+/*------------------ÏÂÃæÊÇÃÜÂëº¯Êı f ËùÓÃ±í-----------------*/
 
-// æ‰©å±•ç½®æ¢è¡¨ï¼Œå°† 32ä½ æ‰©å±•è‡³ 48ä½
+// À©Õ¹ÖÃ»»±í£¬½« 32Î» À©Õ¹ÖÁ 48Î»
 int E[] = {32,  1,  2,  3,  4,  5,
            4,  5,  6,  7,  8,  9,
            8,  9, 10, 11, 12, 13,
@@ -69,7 +69,7 @@ int E[] = {32,  1,  2,  3,  4,  5,
            28, 29, 30, 31, 32,  1
           };
 
-// Sç›’ï¼Œæ¯ä¸ªSç›’æ˜¯4x16çš„ç½®æ¢è¡¨ï¼Œ6ä½ -> 4ä½
+// SºĞ£¬Ã¿¸öSºĞÊÇ4x16µÄÖÃ»»±í£¬6Î» -> 4Î»
 int S_BOX[8][4][16] = {
 	{
 		{14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7},
@@ -121,7 +121,7 @@ int S_BOX[8][4][16] = {
 	}
 };
 
-// Pç½®æ¢ï¼Œ32ä½ -> 32ä½
+// PÖÃ»»£¬32Î» -> 32Î»
 int P[] = {16,  7, 20, 21,
            29, 12, 28, 17,
            1, 15, 23, 26,
@@ -132,16 +132,16 @@ int P[] = {16,  7, 20, 21,
            22, 11,  4, 25
           };
 
-// å®ç° F å‡½æ•°
+// ÊµÏÖ F º¯Êı
 bitset<32> f_function(const bitset<32> &R, const bitset<48> &K) {
 	bitset<48> expandedR;
-	// 1.æ‰©å±•ç½®æ¢
+	// 1.À©Õ¹ÖÃ»»
 	for(int i = 0; i < 48; i++) {
         expandedR[47 - i] = R[32 - E[i]];
 	}
-	// 2.expandedR ä¸ K æ‰§è¡ŒXORè¿ç®—
+	// 2.expandedR Óë K Ö´ĞĞXORÔËËã
 	expandedR = expandedR ^ K;
-	// 3. Sç›’ç½®æ¢
+	// 3. SºĞÖÃ»»
 	bitset<32> output;
 	for(int i = 0, j = 0; i < 48; i += 6, j += 4) {
 		int row = expandedR[47 - i] * 2 + expandedR[47 - i - 5];
@@ -153,43 +153,28 @@ bitset<32> f_function(const bitset<32> &R, const bitset<48> &K) {
 		output[31 - j - 2] = bitTemp[1];
 		output[31 - j - 3] = bitTemp[0];
 	}
-	// 4. Pç½®æ¢
+	// 4. PÖÃ»»
 	bitset<32> tmp = output;
 	for(int i = 0; i < 32; i++) {
 		output[31 - i] = tmp[32 - P[i]];
 	}
 	return output;
 }
-// ç”¨å‡½æ•°å®ç°å¾ªç¯å·¦ç§»
-/*
-void leftShift(bitset<28> &bits, int count) {
+// ÓÃº¯ÊıÊµÏÖÑ­»·×óÒÆ
+bitset<28> leftShift(bitset<28> bits, int count) {
     bitset<28> bittemp;
     for(int i = 0; i < 28; i++)
         bittemp[i] = bits[27 - i];
 	bittemp = (bittemp >> count) | (bittemp << (28 - count));
     for(int i = 0; i < 28; i++)
         bits[27 - i] = bittemp[i];
+	return bits;
 }
-*/
 
-/**
- *  å¯¹56ä½å¯†é’¥çš„å‰åéƒ¨åˆ†è¿›è¡Œå·¦ç§»
- */
-bitset<28> leftShift(bitset<28> k, int shift)
-{
-    bitset<28> tmp = k;
-    for(int i=27; i>=0; --i)
-    {
-        if(i-shift<0)
-            k[i] = tmp[i-shift+28];
-        else
-            k[i] = tmp[i-shift];
-    }
-    return k;
-}
-// ç”Ÿæˆå­å¯†é’¥
+
+// Éú³É×ÓÃÜÔ¿
 void getSubKey(const bitset<64> &key) {
-	// 1. è·å¾—Cå’ŒD
+	// 1. »ñµÃCºÍD
 	bitset<56> initKeyReplace;
 	for(int i = 0; i < 56; i++) {
 		initKeyReplace[55 - i] = key[64 - PC_1[i]];
@@ -222,18 +207,18 @@ void getSubKey(const bitset<64> &key) {
      
 }
 
-// DESåŠ å¯†
+// DES¼ÓÃÜ
 bitset<64> encrypt(const bitset<64> &text) {
-	// 1. åˆå§‹ç½®æ¢IP
+	// 1. ³õÊ¼ÖÃ»»IP
 	bitset<64> initReplace;
 	for(int i = 0; i < 64; i++) {
 		initReplace[63 - i] = text[64 - IP[i]];
 	}
-	// 2. 16è½®
+	// 2. 16ÂÖ
 	bitset<32> currentL;
 	bitset<32> currentR;
 	bitset<32> nextL;
-	// 2.1 è·å¾—Lå’ŒR
+	// 2.1 »ñµÃLºÍR
 	for(int i = 0; i < 64; i++) {
 		if(i < 32)
 			currentL[31 - i] = initReplace[63 - i];
@@ -247,7 +232,7 @@ bitset<64> encrypt(const bitset<64> &text) {
 
 		currentL = nextL;
 	}
-	// 3. 32ä½äº’æ¢
+	// 3. 32Î»»¥»»
 	bitset<64> exchange;
 	for(int i = 0; i < 64; i++) {
 		if(i < 32)
@@ -255,7 +240,7 @@ bitset<64> encrypt(const bitset<64> &text) {
 		else
 			exchange[63 - i] = currentL[63 - i];
 	}
-	// 4. ç»“å°¾IP_1ç½®æ¢
+	// 4. ½áÎ²IP_1ÖÃ»»
 	bitset<64> result;
 	for(int i = 0; i < 64; i++) {
 		result[63 - i] = exchange[64 - IP_1[i]];
@@ -264,16 +249,16 @@ bitset<64> encrypt(const bitset<64> &text) {
 }
 // DES decrypt
 bitset<64> decrypt(const bitset<64> &text) {
-	// 1. åˆå§‹ç½®æ¢IP
+	// 1. ³õÊ¼ÖÃ»»IP
 	bitset<64> initReplace;
 	for(int i = 0; i < 64; i++) {
 		initReplace[63 - i] = text[64 - IP[i]];
 	}
-	// 2. 16è½®
+	// 2. 16ÂÖ
 	bitset<32> currentL;
 	bitset<32> currentR;
 	bitset<32> nextL;
-	// 2.1 è·å¾—Lå’ŒR
+	// 2.1 »ñµÃLºÍR
 	for(int i = 0; i < 64; i++) {
 		if(i < 32)
 			currentL[31 - i] = initReplace[63 - i];
@@ -287,7 +272,7 @@ bitset<64> decrypt(const bitset<64> &text) {
 
 		currentL = nextL;
 	}
-	// 3. 32ä½äº’æ¢
+	// 3. 32Î»»¥»»
 	bitset<64> exchange;
 	for(int i = 0; i < 64; i++) {
 		if(i < 32)
@@ -295,14 +280,14 @@ bitset<64> decrypt(const bitset<64> &text) {
 		else
 			exchange[63 - i] = currentL[63 - i];
 	}
-	// 4. ç»“å°¾IP_1ç½®æ¢
+	// 4. ½áÎ²IP_1ÖÃ»»
 	bitset<64> result;
 	for(int i = 0; i < 64; i++) {
 		result[63 - i] = exchange[64 - IP_1[i]];
 	}
 	return result;
 }
-// 64ä½çš„å­—ç¬¦ä¸²è½¬æ¢æˆbitset
+// 64Î»µÄ×Ö·û´®×ª»»³Ébitset
 bitset<64> charToBitset(const char *s) 
 {
 	bitset<64> res;
@@ -314,39 +299,42 @@ bitset<64> charToBitset(const char *s)
 
 int main(int argc, char *argv[]) 
 {
+<<<<<<< HEAD
 	string s_text = "nihknihk";
 	string s_key = "qiao1234";
 	bitset<64> text = charToBitset(s_text.c_str());
+=======
+	//string s_text = "nihknihk";
+	string s_key = "qiaoting";
+	//bitset<64> text = charToBitset(s_text.c_str());
+>>>>>>> 3e795e41a3df946bfe397ce950eeeeae597ca718
 	bitset<64> key = charToBitset(s_key.c_str());
 
     getSubKey(key);
 
-    bitset<64> ciphertext = encrypt(text);
+    //bitset<64> ciphertext = encrypt(text);
 
 	fstream fileIn, fileOut;
-	//fileIn.open(argv[1], ios::binary);
-	fileIn.open("backgroundColor.png", ios::binary | ios::in);
-	//system("ECHO > qiaoyihan.txt");
-	fileOut.open("¼ÓÃÜ.png", ios::binary | ios::out);
+	fileIn.open("plain_in.txt", ios::binary | ios::in);
+	fileOut.open("cipher.txt", ios::binary | ios::out);
 
 	bitset<64> plain;
 	while(fileIn.read((char *)&plain, sizeof(plain)))
 	{
 		bitset<64> cipher  = encrypt(plain);
 		fileOut.write((char*)&cipher, sizeof(cipher)); 
-		plain.reset();  // ç½®0
+		plain.reset();
 	}
 	fileIn.close();
 	fileOut.close();
 	
-	// è§£å¯† cipher.txtï¼Œå¹¶å†™å…¥å›¾ç‰‡ flower1.jpg  
-	fileIn.open("¼ÓÃÜ.png", ios::binary | ios::in) ;  
-	fileOut.open("½âÃÜ.png", ios::binary | ios::out);  
+	fileIn.open("cipher.txt", ios::binary | ios::in) ;  
+	fileOut.open("plain_out.txt", ios::binary | ios::out);  
 	while(fileIn.read((char*)&plain, sizeof(plain)))  
 	{  
 		bitset<64> temp  = decrypt(plain);  
 		fileOut.write((char*)&temp, sizeof(temp));  
-		plain.reset();  // ç½®0  
+		plain.reset();  
 	}  
 	fileIn.close();
 	fileOut.close();
