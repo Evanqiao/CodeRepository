@@ -1,8 +1,2 @@
-# Projects
-My projects for study.
+CodeRepository这个项目主要用来建立常见的数据结构代码、算法代码和并行、网络等代码库，方便后面开发的重复使用。
 
-DES算法参考：
-[http://blog.csdn.net/lisonglisonglisong/article/details/41777413](http://blog.csdn.net/lisonglisonglisong/article/details/41777413 "DES算法")
-
-c++ bitset参考：
-[http://www.cplusplus.com/reference/bitset/bitset/](http://www.cplusplus.com/reference/bitset/bitset/ "c++ bitset 参考")
