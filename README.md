@@ -20,8 +20,8 @@ stock-stock依赖的jar包：
 ### lombok 使用
 除了依赖jar包外，使用lombok需要安装插件。
 
-![lombok插件]()
+![lombok插件](https://github.com/Evanqiao/CodeRepository/blob/master/res/lombok.png)
 
 如果使用中，报错找不到符号，勾选下面的按钮：
 
-![lombok错误解决]()
+![lombok错误解决](https://github.com/Evanqiao/CodeRepository/blob/master/res/anno.png)
