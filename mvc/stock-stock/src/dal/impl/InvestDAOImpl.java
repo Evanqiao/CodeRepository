@@ -29,7 +29,7 @@ import java.util.Optional;
 public class InvestDAOImpl implements InvestDAO {
 
     private Gson gson;
-    private static final String INVEST_JSON = "res/invest_json.txt";
+    private static final String INVEST_JSON = "stock-stock/res/invest_json.txt";
 
     public InvestDAOImpl() {
         gson = new GsonBuilder().create();

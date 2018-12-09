@@ -31,7 +31,7 @@ public class QueryStockDataServiceWithWebApi implements QueryStockDataService {
 
     private Gson gson;
 
-    private final static String FILE_NAME_PREFIX = "res/";
+    private final static String FILE_NAME_PREFIX = "stock-stock/res/";
     private final static String FILE_NAME_SUFFIX = ".txt";
 
     public QueryStockDataServiceWithWebApi() {
@@ -139,6 +139,8 @@ public class QueryStockDataServiceWithWebApi implements QueryStockDataService {
     private Map<String, Double> storeRequestResultToMap(String requestResult) {
         Map<String, Double> dataMap = Maps.newHashMap();
         Scanner scan = new Scanner(requestResult);
+        // 忽略第一行
+        scan.nextLine();
         while (scan.hasNextLine()) {
             String line = scan.nextLine();
 

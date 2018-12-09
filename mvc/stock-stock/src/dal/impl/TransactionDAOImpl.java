@@ -29,7 +29,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
     private Gson gson;
 
-    private static final String TRANSACTION_JSON = "res/transaction_json.txt";
+    private static final String TRANSACTION_JSON = "stock-stock/res/transaction_json.txt";
 
     public TransactionDAOImpl() {
         gson = new GsonBuilder().create();

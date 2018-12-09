@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -38,7 +39,7 @@ public class QueryStockDataServiceWithWebApiTest {
     public void testQueryAllStockPricesByName() throws Exception {
 
         Map<String, Double>  dataMap = queryStockDataService.queryAllStockPricesByName("GOOG");
-        System.out.println(dataMap);
+        assertEquals(1109.64, dataMap.getOrDefault("2018-03-07", null), 0.001);
     }
 
     /**
