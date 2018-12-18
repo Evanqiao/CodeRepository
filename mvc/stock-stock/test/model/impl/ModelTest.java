@@ -1,11 +1,10 @@
-
 import model.api.IModel;
 import model.api.dto.PortfolioDTO;
 import model.api.dto.TransactionDTO;
 import model.impl.Model;
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;

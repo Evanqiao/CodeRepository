@@ -66,30 +66,12 @@ public interface IModel {
   Double determineTotalValuePortfolio(String name, LocalDate date);
 
   /**
-   * Add stocks to the specified portfolio.
-   *
-   * @param name   Name for the portfolio, if there is no portfolio with such name, it will be
-   *               considered as invalid
-   * @param ticker Name for stock, if there is no stock with such name, it will be considered as
-   *               invalid
-   */
-  void addStockToPortfolio(String name, String ticker);
-
-  /**
    * Get all the transactions in the specified portfolio.
    *
    * @param name The portfolio name
    * @return All the transactions in the specified portfolio
    */
   List<TransactionDTO> getAllTransactions(String name);
-
-  /**
-   * Verify whether the given portfolio is exist.
-   *
-   * @param name The given portfolio name
-   * @return True if the given portfolio is not exist, otherwise false
-   */
-  boolean noSuchPortfolio(String name);
 
   /**
    * Allow user to make a one time investment. Invest a fixed amount into an existing portfolio
@@ -125,10 +107,4 @@ public interface IModel {
   void dollarCostAvgInvestment(String name, double money, LocalDate startDate, LocalDate endDate,
                                int gapBetweenInvest, List<Double> fee, List<Double> ratio);
 
-  /**
-   * Get the number of stock in a portfolio.
-   * @param name The name of a portfolio.
-   * @return Integer presents the size of the portfolio
-   */
-  int getPortfolioSize(String name);
 }

@@ -160,10 +160,6 @@ public class Model implements IModel {
     }
 
     @Override
-    // todo 可以不要
-    public void addStockToPortfolio(String name, String ticker) {}
-
-    @Override
     public List<TransactionDTO> getAllTransactions(String name) {
         List<TransactionDTO> transactionDTOS = transactionDAO.queryAllTransaction();
         if (CollectionUtils.isEmpty(transactionDTOS)) {
@@ -173,12 +169,6 @@ public class Model implements IModel {
                 .filter(Objects::nonNull)
                 .filter(t -> Objects.equals(t.getPortfolioName(), name))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    // todo 可以不要
-    public boolean noSuchPortfolio(String name) {
-        return false;
     }
 
     @Override
@@ -194,12 +184,6 @@ public class Model implements IModel {
             int gapBetweenInvest,
             List<Double> fee,
             List<Double> ratio) {}
-
-    @Override
-    // todo 可以不要
-    public int getPortfolioSize(String name) {
-        return 0;
-    }
 
     private PortfolioDTO getPortfolioByName(String name) {
         List<PortfolioDTO> portfolioDTOS = getPortfolioList();
