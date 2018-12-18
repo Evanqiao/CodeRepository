@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -133,17 +134,8 @@ public class ModelTest {
      */
     @Test
     public void testDollarCostAvgInvestment() throws Exception {
-//TODO: Test goes here... 
-    }
+        LocalDateTime time = LocalDateTime.parse("2011-12-03T10:15:30", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-    /**
-     *
-     * Method: getPortfolioSize(String name)
-     *
-     */
-    @Test
-    public void testGetPortfolioSize() throws Exception {
-//TODO: Test goes here... 
     }
 
 

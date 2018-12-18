@@ -7,7 +7,7 @@ package view;
 public interface IView {
 
     /**
-     * 购买指定名字，指定日期，一定量的股票到指定账户中
+     * 购买指定名字，指定日期，一定量的股票到指定理财包中
      * @param ticker  股票名字
      * @param date  日期 YYYY-MM-DD
      * @param volume 购买股票的数量

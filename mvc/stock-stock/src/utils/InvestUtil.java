@@ -21,4 +21,9 @@ public class InvestUtil {
     private boolean isBeforeDate(LocalDate d1, LocalDate d2) {
         return d1.compareTo(d2) <= 0;
     }
+
+    public static String getIllustrativeInfo() {
+        return "1. 购买指定名字，指定日期，一定量的股票到指定理财包中. e.g. buy <股票名字> <购买日期(eg.2017-10-03T10:15:30)> <数量> <理财包名称> <手续费>\n" +
+                "";
+    }
 }

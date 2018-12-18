@@ -36,6 +36,7 @@ hs_err_pid*
 .iws
 .idea
 impl/soa-backup/
+out/
 
 # maven
 target/
