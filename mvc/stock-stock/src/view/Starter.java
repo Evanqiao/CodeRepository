@@ -1,8 +1,13 @@
 package view;
 
+import command.AllTransaction;
 import command.Buy;
+import command.Cost;
 import command.Create;
+import command.ExamPor;
+import command.GetAllPor;
 import command.MainMenu;
+import command.Value;
 import utils.InvestUtil;
 
 import java.util.HashMap;
@@ -20,7 +25,11 @@ public class Starter {
         knownCommands.put("menu", s -> new MainMenu());
         knownCommands.put("buy",s -> new Buy(s.next(), s.next(), s.nextDouble(), s.next(), s.nextDouble()));
         knownCommands.put("create", s -> new Create(s.next()));
-
+        knownCommands.put("getAllPor", s -> new GetAllPor());
+        knownCommands.put("examPor", s -> new ExamPor(s.next()));
+        knownCommands.put("cost", s -> new Cost(s.next(), s.next()));
+        knownCommands.put("value", s -> new Value(s.next(), s.next()));
+        knownCommands.put("allTran", s -> new AllTransaction(s.next()));
 
         // 显示说明文字
         System.out.println(InvestUtil.getIllustrativeInfo());
