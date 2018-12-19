@@ -25,3 +25,30 @@ stock-stock依赖的jar包：
 如果使用中，报错找不到符号，勾选下面的按钮：
 
 ![lombok错误解决](https://github.com/Evanqiao/CodeRepository/blob/master/res/anno.png)
+
+### 运行方法
+main函数在view.Starter.main下，运行main函数即可。也可以生成jar包，运行 java -jar stock-stock.jar
+
+运行效果：
+
+0. 回到主菜单. 命令：menu   
+1. 创建理财包. e.g. create <理财包名称>  
+2. 购买指定名字，指定日期，一定量的股票到指定理财包中. e.g. buy <股票名字> <购买日期(eg.2017-10-03T10:15:30)> <数量> <理财包名称> <手续费>  
+3. 获取所有理财包的信息. e.g. getAllPor  
+4. 获取指定名字的理财包的信息. e.g. examPor <理财包名字>  
+5. 获取指定理财包在指定日期前的投资成本. e.g. cost <理财包名字> <日期(eg. 2017-10-03)>  
+6. 获取指定理财包在指定日期的价值. e.g. value <理财包名字> <日期(eg. 2017-10-03)>  
+7. 获取指定理财包的所有交易记录. e.g. allTran <理财包名字>   
+getAllPor  
+[PortfolioDTO(name=QQQ, stockDTOS=[StockDTO(name=GOOG, totalVolume=50.0)]), PortfolioDTO(name=qqq, stockDTOS=null)]  
+buy MSFT 2017-11-21T12:23:00 100 qqq 1.2  
+购买成功  
+getAllPor  
+[PortfolioDTO(name=QQQ, stockDTOS=[StockDTO(name=GOOG, totalVolume=50.0)]), PortfolioDTO(name=qqq, stockDTOS=[StockDTO(name=MSFT, totalVolume=100.0)])]
+cost qqq 2018-12-12  
+-8370.8  
+value qqq 2017-12-01  
+8426.0  
+allTran qqq  
+[TransactionDTO(portfolioName=qqq, stockName=MSFT, type=BUY, transactionDate=2017-11-21, price=83.72, volume=100.0, commissionFee=1.2)]  
+q  
