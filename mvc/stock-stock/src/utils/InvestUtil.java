@@ -23,7 +23,8 @@ public class InvestUtil {
     }
 
     public static String getIllustrativeInfo() {
-        return "1. 购买指定名字，指定日期，一定量的股票到指定理财包中. e.g. buy <股票名字> <购买日期(eg.2017-10-03T10:15:30)> <数量> <理财包名称> <手续费>\n" +
-                "";
+        return  "0. 回到主菜单. 命令：menu\n" +
+                "1. 购买指定名字，指定日期，一定量的股票到指定理财包中. e.g. buy <股票名字> <购买日期(eg.2017-10-03T10:15:30)> <数量> <理财包名称> <手续费>\n" +
+                "2. 创建理财包. e.g. create <理财包名称>";
     }
 }

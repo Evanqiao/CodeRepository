@@ -1,6 +1,8 @@
 package view;
 
 import command.Buy;
+import command.Create;
+import command.MainMenu;
 import utils.InvestUtil;
 
 import java.util.HashMap;
@@ -15,7 +17,10 @@ public class Starter {
         IView m = new ConsoleViewImpl();
 
         Map<String, Function<Scanner, ConsoleCommand>> knownCommands = new HashMap<>();
+        knownCommands.put("menu", s -> new MainMenu());
         knownCommands.put("buy",s -> new Buy(s.next(), s.next(), s.nextDouble(), s.next(), s.nextDouble()));
+        knownCommands.put("create", s -> new Create(s.next()));
+
 
         // 显示说明文字
         System.out.println(InvestUtil.getIllustrativeInfo());

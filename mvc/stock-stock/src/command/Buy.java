@@ -19,6 +19,6 @@ public class Buy implements ConsoleCommand {
 
     @Override
     public void go(IView view) {
-        view.buyStock(ticker, date, volume, portfolioName, commissionfee);
+        System.out.println(view.buyStock(ticker, date, volume, portfolioName, commissionfee));
     }
 }
