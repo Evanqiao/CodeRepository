@@ -44,9 +44,10 @@ public class Proxy implements Subject {
 ```
 
 相关知识点：
-[代理模式及Java实现动态代理](https://www.jianshu.com/p/6f6bb2f0ece9)
-[Java Dynamic Proxy](https://b1ngz.github.io/java-dynamic-proxy/)
-[What is the difference between JDK dynamic proxy and CGLib?](https://stackoverflow.com/questions/10664182/what-is-the-difference-between-jdk-dynamic-proxy-and-cglib/10664208#10664208)
+- [代理模式及Java实现动态代理](https://www.jianshu.com/p/6f6bb2f0ece9)
+- [Java Dynamic Proxy](https://b1ngz.github.io/java-dynamic-proxy/)
+- [What is the difference between JDK dynamic proxy and CGLib?](https://stackoverflow.com/questions/10664182/what-is-the-difference-between-jdk-dynamic-proxy-and-cglib/10664208#10664208)
+
 In case of the Proxy Design Pattern, What is the difference between JDK's Dynamic Proxy and third party dynamic code generation API s such as CGLib?
 
 What is the difference between using both the approaches and when should one prefer one over another?
