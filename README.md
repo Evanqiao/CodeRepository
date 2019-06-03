@@ -44,11 +44,11 @@ getAllPor
 buy MSFT 2017-11-21T12:23:00 100 qqq 1.2  
 购买成功  
 getAllPor  
-[PortfolioDTO(name=QQQ, stockDTOS=[StockDTO(name=GOOG, totalVolume=50.0)]), PortfolioDTO(name=qqq, stockDTOS=[StockDTO(name=MSFT, totalVolume=100.0)])]
+[PortfolioDTO(name=QQQ, stockDTOS=[StockDTO(name=GOOG, totalVolume=50.0)]), PortfolioDTO(name=qqq, stockDTOS=[StockDTO(name=MSFT, totalVolume=100.0)])]   
 cost qqq 2018-12-12  
 -8370.8  
-value qqq 2017-12-01  
+value qqq 2017-12-01   
 8426.0  
 allTran qqq  
-[TransactionDTO(portfolioName=qqq, stockName=MSFT, type=BUY, transactionDate=2017-11-21, price=83.72, volume=100.0, commissionFee=1.2)]  
+[TransactionDTO(portfolioName=qqq, stockName=MSFT, type=BUY, transactionDate=2017-11-21, price=83.72, volume=100.0, commissionFee=1.2)]   
 q  
