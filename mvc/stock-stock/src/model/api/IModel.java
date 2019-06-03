@@ -3,7 +3,6 @@ package model.api;
 import model.api.dto.PortfolioDTO;
 import model.api.dto.TransactionDTO;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
