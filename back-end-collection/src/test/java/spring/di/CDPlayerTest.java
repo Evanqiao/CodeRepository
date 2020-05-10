@@ -7,8 +7,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import spring.di.soundsystem.CompactDisc;
 import spring.di.soundsystem.MediaPlayer;
+import spring.di.soundsystem.TrackCounter;
 import spring.di.soundsystem.config.SoundSystemConfig;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -20,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 public class CDPlayerTest {
     @Autowired private CompactDisc cd;
     @Autowired private MediaPlayer mediaPlayer;
+    @Autowired private TrackCounter counter;
 
 
     @Test
@@ -30,5 +33,17 @@ public class CDPlayerTest {
     @Test
     public void testPlay() {
         mediaPlayer.play();
+    }
+
+    @Test
+    public void testTrackCount() {
+        cd.playTrack(1);
+        cd.playTrack(1);
+
+        cd.playTrack(2);
+
+        assertEquals(2, counter.getCount(1));
+        assertEquals(1, counter.getCount(2));
+        assertEquals(0, counter.getCount(5));
     }
 }
