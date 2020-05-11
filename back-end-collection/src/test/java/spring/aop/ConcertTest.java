@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import spring.aop.concert.Encoreable;
 import spring.aop.concert.Performance;
 import spring.aop.config.ConcertConfig;
 
@@ -28,5 +29,11 @@ public class ConcertTest {
     @Test
     public void testPerform() {
         performance.perform();
+    }
+
+    @Test
+    public void testEncoreable() {
+        Encoreable encoreable = (Encoreable) performance;
+        encoreable.performEncore();
     }
 }
