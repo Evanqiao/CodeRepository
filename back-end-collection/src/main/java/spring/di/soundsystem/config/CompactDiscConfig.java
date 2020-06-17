@@ -2,7 +2,6 @@ package spring.di.soundsystem.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import spring.di.soundsystem.CDPlayer;
 import spring.di.soundsystem.CompactDisc;
 import spring.di.soundsystem.SgtPeppers;
 
@@ -16,5 +15,4 @@ public class CompactDiscConfig {
     public CompactDisc sgtPeppers() {
         return new SgtPeppers();
     }
-
 }

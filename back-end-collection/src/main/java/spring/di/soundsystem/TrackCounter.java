@@ -1,14 +1,10 @@
 package spring.di.soundsystem;
 
 import com.google.common.collect.Maps;
-import org.aspectj.lang.annotation.AfterReturning;
+import java.util.Map;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author qiaoyihan
@@ -31,5 +27,4 @@ public class TrackCounter {
     public int getCount(int trackNo) {
         return trackCountMap.getOrDefault(trackNo, 0);
     }
-
 }
