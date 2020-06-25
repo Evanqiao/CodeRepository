@@ -1,5 +1,18 @@
 CodeRepository这个项目主要用来建立常见的数据结构代码、算法代码和并行、网络等代码库，方便后面开发的重复使用。
 
+## back-end-collection
+该目录下是后端开发的一些demo例子，包括但不限于以下几个方面：
+.
+├── algorithm   // 算法
+├── common      // 公共包
+├── concurrent  // 并发
+├── guava       // google的guava库demo
+├── io          // java io
+├── netty       // netty
+├── redis       // redis
+└── spring      // spring
+
+
 ## mvc demo
 
 stock-stock是一个mvc的例子，主要分为以下几层：
