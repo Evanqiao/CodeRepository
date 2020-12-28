@@ -20,8 +20,7 @@ public class NioServer extends Thread {
     public void run() {
         // 创建Selector和Channel
         try (Selector selector = Selector.open();
-                ServerSocketChannel serverSocket =
-                        ServerSocketChannel.open()) {
+                ServerSocketChannel serverSocket = ServerSocketChannel.open()) {
             serverSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 3333));
             serverSocket.configureBlocking(false);
             // 注册到Selector，并说明关注点

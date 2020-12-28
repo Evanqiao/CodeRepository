@@ -1,6 +1,5 @@
 package concurrent.threadlocal;
 
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +9,10 @@ import java.util.List;
  */
 public class SoftReferenceHouse {
     public static void main(String[] args) {
-        List<SoftReference<House>> houses = new ArrayList<>();
+        List<House> houses = new ArrayList<>();
 
         for (int i = 0; ; ) {
-            SoftReference<House> buyer2 = new SoftReference<>(new House());
-            houses.add(buyer2);
+            houses.add(new House());
             System.out.println("i = " + (++i));
         }
     }

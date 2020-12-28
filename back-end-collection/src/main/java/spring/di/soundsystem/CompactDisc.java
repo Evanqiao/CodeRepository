@@ -6,5 +6,6 @@ package spring.di.soundsystem;
  */
 public interface CompactDisc {
     void play();
+
     void playTrack(int trackNo);
 }

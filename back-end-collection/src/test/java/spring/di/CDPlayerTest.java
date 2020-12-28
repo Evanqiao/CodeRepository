@@ -1,5 +1,8 @@
 package spring.di;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +12,6 @@ import spring.di.soundsystem.CompactDisc;
 import spring.di.soundsystem.MediaPlayer;
 import spring.di.soundsystem.TrackCounter;
 import spring.di.soundsystem.config.SoundSystemConfig;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @author qiaoyihan
@@ -23,7 +23,6 @@ public class CDPlayerTest {
     @Autowired private CompactDisc cd;
     @Autowired private MediaPlayer mediaPlayer;
     @Autowired private TrackCounter counter;
-
 
     @Test
     public void cdShouldNotBeNull() {

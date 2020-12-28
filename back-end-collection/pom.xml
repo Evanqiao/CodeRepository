@@ -88,7 +88,7 @@
         <guava-retrying.version>2.0.0</guava-retrying.version>
         <jedis.version>3.2.0</jedis.version>
         <spring.version>5.2.7.RELEASE</spring.version>
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
 
@@ -101,6 +101,24 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.coveo</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <skip>false</skip>
+                    <skipSortingImports>false</skipSortingImports>
+                    <style>aosp</style>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

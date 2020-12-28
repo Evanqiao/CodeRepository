@@ -15,5 +15,4 @@ public class CDPlayerConfig {
     public CDPlayer cdPlayer(CompactDisc cd) {
         return new CDPlayer(cd);
     }
-
 }

@@ -5,7 +5,6 @@ import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
 import common.ServiceException;
-
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RetryTest {
     public static void main(String[] args) {
-        try{
+        try {
             work();
         } catch (Exception e) {
             e.printStackTrace();

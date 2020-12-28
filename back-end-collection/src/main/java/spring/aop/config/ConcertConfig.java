@@ -12,5 +12,4 @@ import spring.aop.concert.Performance;
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan(basePackageClasses = {Performance.class})
-public class ConcertConfig {
-}
+public class ConcertConfig {}

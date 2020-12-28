@@ -1,7 +1,6 @@
 package spring.aop.concert;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
@@ -45,12 +44,11 @@ public class Audience {
     public void watchPerformance(ProceedingJoinPoint joinPoint) {
         System.out.println("Silence cell phones");
         System.out.println("Taking seats");
-        try{
+        try {
             joinPoint.proceed();
         } catch (Throwable e) {
             System.out.println("Demanding a refund");
         }
         System.out.println("CLAP CLAP CLAP!!!");
     }
-
 }

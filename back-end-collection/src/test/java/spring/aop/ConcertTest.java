@@ -1,5 +1,7 @@
 package spring.aop;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import spring.aop.concert.Encoreable;
 import spring.aop.concert.Performance;
 import spring.aop.config.ConcertConfig;
-
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @author qiaoyihan
